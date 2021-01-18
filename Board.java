@@ -110,10 +110,10 @@ public class Board {
       if (getMark(i, j) == ' ')
         continue;
       while (j < length - 1) {
-        if (j == length - 1)
-          return getMark(i, j) == getMark(i, j - 1);
         if (getMark(i, j) != getMark(i, j + 1))
           break;
+        if (j == length - 2)
+          return true;
         j++;
       }
     }
@@ -128,10 +128,10 @@ public class Board {
       if (getMark(i, j) == ' ')
         continue;
       while (i < length - 1) {
-        if (i == length - 1)
-          return getMark(i, j) == getMark(i - 1, j);
         if (getMark(i, j) != getMark(i + 1, j))
           break;
+        if (i == length - 2)
+          return true;
         i++;
       }
     }
@@ -146,7 +146,7 @@ public class Board {
         break;
       if (getMark(i, i) != getMark(i + 1, i + 1))
         break;
-      if (i == length - 1)
+      if (i == length - 2)
         return true;
     }
 
@@ -155,7 +155,7 @@ public class Board {
         break;
       if (getMark(i, length - 1 - i) != getMark(i + 1, length - 2 - i))
         break;
-      if (i == length - 1)
+      if (i == length - 2)
         return true;
     }
     System.out.println("Check diagonals compelte");
