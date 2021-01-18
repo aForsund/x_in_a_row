@@ -16,9 +16,9 @@ public class Game {
     Board board = new Board(DialogOptions.boardSize);
 
     Choice playerOneChoice = playerOne.makeChoice(board);
-    board.addMark(playerOne.mark, playerOneChoice);
+    board.addMark(playerOneChoice);
     Choice playerTwoChoice = playerTwo.makeChoice(board);
-    board.addMark(playerTwo.mark, playerTwoChoice);
+    board.addMark(playerTwoChoice);
 
     System.out.println("Player one has made choice: " + playerOneChoice.row + playerOneChoice.column);
     System.out.println("Player two has made choice: " + playerTwoChoice.row + playerTwoChoice.column);

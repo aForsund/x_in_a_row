@@ -1,13 +1,15 @@
 public class Board {
-  public char[][] board;
+  public char[][] gameBoard;
+  public int length;
 
   public Board(int size) {
-    board = new char[size][size];
+    length = size;
+    gameBoard = new char[size][size];
 
     // initialize blank board
-    for (int i = 0; i < board.length; i++) {
-      for (int j = 0; j < board[i].length; j++) {
-        board[i][j] = ' ';
+    for (int i = 0; i < gameBoard.length; i++) {
+      for (int j = 0; j < gameBoard[i].length; j++) {
+        gameBoard[i][j] = ' ';
       }
     }
   }
@@ -15,12 +17,12 @@ public class Board {
   public void printBoard() {
     System.out.println();
     printDots();
-    for (int i = 0; i < board.length; i++) {
+    for (int i = 0; i < gameBoard.length; i++) {
       int count = 0;
-      while (count < board[i].length) {
-        System.out.print("| " + board[i][count] + " ");
+      while (count < gameBoard[i].length) {
+        System.out.print("| " + gameBoard[i][count] + " ");
         count++;
-        if (count == board[i].length)
+        if (count == gameBoard[i].length)
           System.out.println("|");
       }
       printDots();
@@ -30,7 +32,7 @@ public class Board {
 
   private void printDots() {
     int count = 0;
-    int length = board.length * 3 + board.length;
+    int length = gameBoard.length * 3 + gameBoard.length;
 
     while (count <= length) {
       System.out.print("-");
@@ -39,7 +41,11 @@ public class Board {
     System.out.println();
   }
 
-  public void addMark(char mark, Choice choice) {
-    board[choice.row][choice.column] = mark;
+  public void addMark(Choice choice) {
+    gameBoard[choice.row][choice.column] = choice.mark;
+  }
+
+  public char getMark(int row, int column) {
+    return gameBoard[row][column];
   }
 }

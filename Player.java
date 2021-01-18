@@ -15,20 +15,39 @@ public class Player {
   }
 
   public Choice makeChoice(Board board) {
-    int hValue = 0;
-    int vValue = 0;
+
+    Choice choice;
     System.out.println("I'm told to make a choice, but for now I'm only printing my variables");
     System.out.println(cpu);
     System.out.println(difficulty);
     System.out.println(turn);
 
     switch (difficulty) {
-      case 0:
+      case 1:
+        choice = randomChoice(board);
         break;
       default:
-
+        choice = randomChoice(board);
     }
-    return new Choice(hValue, vValue);
+    return choice;
+  }
+
+  private Choice randomChoice(Board board) {
+    int min = 0;
+    int max = board.length;
+    boolean found = false;
+    int hValue = -1;
+    int vValue = -1;
+
+    while (!found) {
+      hValue = (int) (Math.random() * max + min);
+      vValue = (int) (Math.random() * max + min);
+      if (board.getMark(hValue, vValue) == ' ') {
+        found = true;
+      }
+    }
+
+    return new Choice(hValue, vValue, mark);
   }
 
 }
