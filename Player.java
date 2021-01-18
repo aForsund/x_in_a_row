@@ -31,8 +31,9 @@ public class Player {
         choice = randomChoice(board);
         break;
       case 2:
-        blockOrWin(board);
-        choice = randomChoice(board);
+
+        choice = blockOrWin(board);
+        ;
         break;
       default:
         choice = randomChoice(board);
@@ -58,23 +59,39 @@ public class Player {
     return new Choice(hValue, vValue, mark);
   }
 
-  private void blockOrWin(Board board) {
-    Board clonedBoard = new Board(board);
+  private Choice blockOrWin(Board board) {
+    Board clonedBoard;
 
     Field[] avaliableMoves = board.getAvaliableMoves();
 
+    // Checking for possible win condition
+    System.out.println("Checking for possible win condition...");
     for (int i = 0; i < avaliableMoves.length; i++) {
-
+      clonedBoard = new Board(board);
       Choice choice = new Choice(avaliableMoves[i].row, avaliableMoves[i].column, mark);
       clonedBoard.addMark(choice);
+
+      if (clonedBoard.checkWinCondition()) {
+        System.out.println("I have found a win condition on " + choice.field.row + "-" + choice.field.column);
+        return choice;
+      }
     }
-    System.out.println("Printing cloned board: ");
 
-    clonedBoard.printBoard();
+    // Checking for possible loss condition
+    System.out.println("Checking for possible loss condition...");
+    for (int i = 0; i < avaliableMoves.length; i++) {
+      clonedBoard = new Board(board);
+      Choice choice = new Choice(avaliableMoves[i].row, avaliableMoves[i].column, mark == 'X' ? 'O' : 'X');
+      clonedBoard.addMark(choice);
 
-    System.out.println("Printing original board: ");
-    board.printBoard();
+      if (clonedBoard.checkWinCondition()) {
+        System.out.println("I have found a loss condition on " + choice.field.row + "-" + choice.field.column);
+        return choice;
+      }
 
+    }
+    System.out.println("I was not able to find any win or loss conditions - making a random choice...");
+    return randomChoice(board);
   }
 
 }
