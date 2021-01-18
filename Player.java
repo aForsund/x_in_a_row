@@ -26,6 +26,10 @@ public class Player {
       case 1:
         choice = randomChoice(board);
         break;
+      case 2:
+        blockOrWin(board);
+        choice = randomChoice(board);
+        break;
       default:
         choice = randomChoice(board);
     }
@@ -48,6 +52,25 @@ public class Player {
     }
 
     return new Choice(hValue, vValue, mark);
+  }
+
+  private void blockOrWin(Board board) {
+    Board clonedBoard = new Board(board);
+
+    Field[] avaliableMoves = board.getAvaliableMoves();
+
+    for (int i = 0; i < avaliableMoves.length; i++) {
+
+      Choice choice = new Choice(avaliableMoves[i].row, avaliableMoves[i].column, mark);
+      clonedBoard.addMark(choice);
+    }
+    System.out.println("Printing cloned board: ");
+
+    clonedBoard.printBoard();
+
+    System.out.println("Printing original board: ");
+    board.printBoard();
+
   }
 
 }

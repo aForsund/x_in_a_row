@@ -1,11 +1,9 @@
 public class Choice {
-  public int row;
-  public int column;
   public char mark;
+  public Field field;
 
   Choice(int rValue, int cValue, char playerMark) {
-    row = rValue;
-    column = cValue;
+    field = new Field(rValue, cValue);
     mark = playerMark;
   }
 

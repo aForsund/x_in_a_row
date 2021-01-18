@@ -20,8 +20,8 @@ public class Game {
     Choice playerTwoChoice = playerTwo.makeChoice(board);
     board.addMark(playerTwoChoice);
 
-    System.out.println("Player one has made choice: " + playerOneChoice.row + playerOneChoice.column);
-    System.out.println("Player two has made choice: " + playerTwoChoice.row + playerTwoChoice.column);
+    System.out.println("Player one has made choice: " + playerOneChoice.field.row + playerOneChoice.field.column);
+    System.out.println("Player two has made choice: " + playerTwoChoice.field.row + playerTwoChoice.field.column);
 
     board.printBoard();
   }
