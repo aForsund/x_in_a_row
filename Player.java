@@ -14,13 +14,17 @@ public class Player {
     mark = hasMark;
   }
 
+  public void setTurn(boolean turn) {
+    this.turn = turn;
+  }
+
+  public boolean getTurn() {
+    return this.turn;
+  }
+
   public Choice makeChoice(Board board) {
 
     Choice choice;
-    System.out.println("I'm told to make a choice, but for now I'm only printing my variables");
-    System.out.println(cpu);
-    System.out.println(difficulty);
-    System.out.println(turn);
 
     switch (difficulty) {
       case 1:

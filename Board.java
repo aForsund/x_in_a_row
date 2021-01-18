@@ -89,4 +89,77 @@ public class Board {
     }
 
   }
+
+  public boolean checkWinCondition() {
+    boolean winCondition = false;
+    winCondition = checkRows();
+    if (winCondition)
+      return true;
+    winCondition = checkColumns();
+    if (winCondition)
+      return true;
+    winCondition = checkDiagonals();
+    return winCondition;
+  }
+
+  private boolean checkRows() {
+    int j = 0;
+
+    for (int i = 0; i < length; i++) {
+      j = 0;
+      if (getMark(i, j) == ' ')
+        continue;
+      while (j < length - 1) {
+        if (j == length - 1)
+          return getMark(i, j) == getMark(i, j - 1);
+        if (getMark(i, j) != getMark(i, j + 1))
+          break;
+        j++;
+      }
+    }
+    System.out.println("checkRows complete");
+    return false;
+  }
+
+  private boolean checkColumns() {
+    int i = 0;
+    for (int j = 0; j < length; j++) {
+      i = 0;
+      if (getMark(i, j) == ' ')
+        continue;
+      while (i < length - 1) {
+        if (i == length - 1)
+          return getMark(i, j) == getMark(i - 1, j);
+        if (getMark(i, j) != getMark(i + 1, j))
+          break;
+        i++;
+      }
+    }
+    System.out.println("checkColumns complete");
+    return false;
+  }
+
+  private boolean checkDiagonals() {
+
+    for (int i = 0; i < length - 1; i++) {
+      if (getMark(i, i) == ' ')
+        break;
+      if (getMark(i, i) != getMark(i + 1, i + 1))
+        break;
+      if (i == length - 1)
+        return true;
+    }
+
+    for (int i = 0; i < length - 1; i++) {
+      if (getMark(i, length - 1 - i) == ' ')
+        break;
+      if (getMark(i, length - 1 - i) != getMark(i + 1, length - 2 - i))
+        break;
+      if (i == length - 1)
+        return true;
+    }
+    System.out.println("Check diagonals compelte");
+    return false;
+  }
+
 }
