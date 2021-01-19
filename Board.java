@@ -238,7 +238,7 @@ public class Board {
       score = -1000;
     }
 
-    if (checkWinCondition(minPlayer.mark)) {
+    if (checkWinCondition(maxPlayer.mark)) {
       score = 1000;
     }
 

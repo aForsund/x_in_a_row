@@ -33,7 +33,7 @@ public class Player {
         choice = bestMove(board, 3);
         break;
       case 4:
-        choice = bestMove(board, DialogOptions.boardSize * DialogOptions.boardSize);
+        choice = bestMove(board, 9);
         break;
       case 5:
         int randomNumber = (int) (Math.random() * 4 + 1);
@@ -42,7 +42,7 @@ public class Player {
         else if (randomNumber == 2)
           choice = blockOrWin(board);
         else
-          choice = bestMove(board, (int) (Math.random() * DialogOptions.boardSize * DialogOptions.boardSize + 1));
+          choice = bestMove(board, (int) (Math.random() * 9 + 1));
         break;
       default:
         choice = randomChoice(board);
@@ -108,6 +108,8 @@ public class Player {
     MinimaxPlayer minPlayer = new MinimaxPlayer(false, false, mark == 'X' ? 'O' : 'X');
 
     int maxEvaluation = -200000;
+    int alpha = -200000;
+    int beta = 200000;
     Field[] avaliableMoves = board.getAvaliableMoves();
     int turnCount = DialogOptions.boardSize * DialogOptions.boardSize - avaliableMoves.length;
     Choice bestChoice = new Choice(avaliableMoves[0].row, avaliableMoves[0].column, maxPlayer.getMark());
@@ -115,7 +117,7 @@ public class Player {
       Board clonedBoard = new Board(board);
       Choice choice = new Choice(avaliableMoves[i].row, avaliableMoves[i].column, maxPlayer.getMark());
       clonedBoard.addMark(choice);
-      int returnEvaluation = minimax(clonedBoard, depth, false, turnCount + 1, maxPlayer, minPlayer);
+      int returnEvaluation = minimax(clonedBoard, depth, false, turnCount + 1, alpha, beta, maxPlayer, minPlayer);
 
       if (returnEvaluation > maxEvaluation) {
         maxEvaluation = returnEvaluation;
@@ -126,13 +128,13 @@ public class Player {
     return bestChoice;
   }
 
-  private int minimax(Board board, int depth, boolean maximizer, int turnCount, MinimaxPlayer maxPlayer,
-      MinimaxPlayer minPlayer) {
+  private int minimax(Board board, int depth, boolean maximizer, int turnCount, int alpha, int beta,
+      MinimaxPlayer maxPlayer, MinimaxPlayer minPlayer) {
     if (depth == 0 || board.isEnded())
       return board.getScore(maxPlayer, minPlayer) / turnCount;
 
     if (maximizer) {
-      int maxEvaluation = -200000;
+      // int maxEvaluation = -200000;
       Field[] avaliableMoves = board.getAvaliableMoves();
       int newTurnCount = turnCount + 1;
 
@@ -140,12 +142,16 @@ public class Player {
         Board clonedBoard = new Board(board);
         Choice choice = new Choice(avaliableMoves[i].row, avaliableMoves[i].column, maxPlayer.mark);
         clonedBoard.addMark(choice);
-        int evaluation = minimax(clonedBoard, depth - 1, false, newTurnCount, maxPlayer, minPlayer);
-        maxEvaluation = Math.max(maxEvaluation, evaluation);
+        int evaluation = minimax(clonedBoard, depth - 1, false, newTurnCount, alpha, beta, maxPlayer, minPlayer);
+        if (evaluation > alpha)
+          alpha = evaluation;
+        if (alpha >= beta)
+          break;
+        // maxEvaluation = Math.max(maxEvaluation, evaluation);
       }
-      return maxEvaluation;
+      return alpha;
     } else {
-      int minEvaluation = 200000;
+      // int minEvaluation = 200000;
       Field[] avaliableMoves = board.getAvaliableMoves();
       int newTurnCount = turnCount + 1;
 
@@ -153,10 +159,14 @@ public class Player {
         Board clonedBoard = new Board(board);
         Choice choice = new Choice(avaliableMoves[i].row, avaliableMoves[i].column, minPlayer.mark);
         clonedBoard.addMark(choice);
-        int evaluation = minimax(clonedBoard, depth - 1, true, newTurnCount, maxPlayer, minPlayer);
-        minEvaluation = Math.min(minEvaluation, evaluation);
+        int evaluation = minimax(clonedBoard, depth - 1, true, newTurnCount, alpha, beta, maxPlayer, minPlayer);
+        if (evaluation < beta)
+          beta = evaluation;
+        if (alpha >= beta)
+          break;
+        // minEvaluation = Math.min(minEvaluation, evaluation);
       }
-      return minEvaluation;
+      return beta;
     }
   }
 
