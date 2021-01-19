@@ -4,8 +4,10 @@ public class DialogOptions {
 
   static Scanner input = new Scanner(System.in);
   static boolean valid = true;
+
   static int temp = 0;
 
+  public static boolean ongoing = true;
   public static int boardSize = 0;
   public static int playerOne = 0;
   public static int playerTwo = 0;
@@ -133,6 +135,31 @@ public class DialogOptions {
 
     }
     valid = true;
+  }
+
+  public static void playAgain() {
+    valid = true;
+    String answer;
+    input.nextLine();
+    while (valid) {
+      System.out.println("Play again? (y/n) ");
+      try {
+        answer = input.nextLine();
+        if (answer.equalsIgnoreCase("y") || answer.equalsIgnoreCase("yes"))
+          valid = false;
+        else if (answer.equalsIgnoreCase("n") || answer.equalsIgnoreCase("no")) {
+          valid = false;
+          ongoing = false;
+        } else
+          System.out.println("Please answer yes (y) or no (n)");
+      } catch (InputMismatchException e) {
+        System.out.println("Invalid input, try again...");
+        input.next();
+        continue;
+      }
+
+    }
+
   }
 
 }
