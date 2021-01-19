@@ -92,8 +92,7 @@ public class DialogOptions {
     System.out.println("Please select options for player 2");
 
     while (valid) {
-      System.out
-          .println("0: Local Player, 1: CPU Easy, 2: CPU Moderate, 3: CPU Hard, 4: CPU Impossible, 5: CPU Random");
+      System.out.println("1: CPU Easy, 2: CPU Moderate, 3: CPU Hard, 4: CPU Impossible, 5: CPU Random");
       System.out.print("#: ");
       try {
         temp = input.nextInt();
