@@ -102,7 +102,7 @@ public class Board {
     return winCondition;
   }
 
-  private boolean checkWinCondition(char mark) {
+  public boolean checkWinCondition(char mark) {
     boolean winCondition = false;
     winCondition = checkRows(mark);
     if (winCondition)

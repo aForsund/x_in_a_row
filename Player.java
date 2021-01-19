@@ -80,7 +80,7 @@ public class Player {
       Choice choice = new Choice(avaliableMoves[i].row, avaliableMoves[i].column, mark);
       clonedBoard.addMark(choice);
 
-      if (clonedBoard.checkWinCondition()) {
+      if (clonedBoard.checkWinCondition(mark)) {
         System.out.println("I have found a win condition on " + choice.field.row + "-" + choice.field.column);
         return choice;
       }
@@ -93,8 +93,9 @@ public class Player {
       Choice choice = new Choice(avaliableMoves[i].row, avaliableMoves[i].column, mark == 'X' ? 'O' : 'X');
       clonedBoard.addMark(choice);
 
-      if (clonedBoard.checkWinCondition()) {
+      if (clonedBoard.checkWinCondition(mark == 'X' ? 'O' : 'X')) {
         System.out.println("I have found a loss condition on " + choice.field.row + "-" + choice.field.column);
+        choice = new Choice(avaliableMoves[i].row, avaliableMoves[i].column, mark);
         return choice;
       }
 
