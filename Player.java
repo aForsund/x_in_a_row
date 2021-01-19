@@ -33,7 +33,7 @@ public class Player {
         choice = bestMove(board, 3);
         break;
       case 4:
-        choice = bestMove(board, 9);
+        choice = bestMove(board, DialogOptions.boardSize * DialogOptions.boardSize + 1);
         break;
       case 5:
         int randomNumber = (int) (Math.random() * 4 + 1);
@@ -42,7 +42,7 @@ public class Player {
         else if (randomNumber == 2)
           choice = blockOrWin(board);
         else
-          choice = bestMove(board, (int) (Math.random() * 9 + 1));
+          choice = bestMove(board, (int) (Math.random() * 6 + 1));
         break;
       default:
         choice = randomChoice(board);
@@ -105,6 +105,7 @@ public class Player {
   }
 
   private Choice bestMove(Board board, int depth) {
+
     MinimaxPlayer maxPlayer = new MinimaxPlayer(true, true, mark);
     MinimaxPlayer minPlayer = new MinimaxPlayer(false, false, mark == 'X' ? 'O' : 'X');
 
@@ -112,8 +113,29 @@ public class Player {
     int alpha = -200000;
     int beta = 200000;
     Field[] avaliableMoves = board.getAvaliableMoves();
-    int turnCount = DialogOptions.boardSize * DialogOptions.boardSize - avaliableMoves.length;
     Choice bestChoice = new Choice(avaliableMoves[0].row, avaliableMoves[0].column, maxPlayer.getMark());
+    int turnCount = DialogOptions.boardSize * DialogOptions.boardSize - avaliableMoves.length + 1;
+    if (turnCount == 1) {
+      int randomCorner = (int) (Math.random() * 4 + 1);
+      switch (randomCorner) {
+        case 1:
+          bestChoice = new Choice(0, 0, mark);
+          return bestChoice;
+        case 2:
+          bestChoice = new Choice(0, DialogOptions.boardSize - 1, mark);
+          return bestChoice;
+        case 3:
+          bestChoice = new Choice(DialogOptions.boardSize - 1, 0, mark);
+          return bestChoice;
+        case 4:
+          bestChoice = new Choice(DialogOptions.boardSize - 1, DialogOptions.boardSize - 1, mark);
+          return bestChoice;
+        default:
+          bestChoice = new Choice(0, 0, mark);
+          return bestChoice;
+      }
+    }
+
     for (int i = 0; i < avaliableMoves.length; i++) {
       Board clonedBoard = new Board(board);
       Choice choice = new Choice(avaliableMoves[i].row, avaliableMoves[i].column, maxPlayer.getMark());
@@ -135,7 +157,7 @@ public class Player {
       return board.getScore(maxPlayer, minPlayer) / turnCount;
 
     if (maximizer) {
-      // int maxEvaluation = -200000;
+      int maxEvaluation = -200000;
       Field[] avaliableMoves = board.getAvaliableMoves();
       int newTurnCount = turnCount + 1;
 
@@ -144,15 +166,16 @@ public class Player {
         Choice choice = new Choice(avaliableMoves[i].row, avaliableMoves[i].column, maxPlayer.mark);
         clonedBoard.addMark(choice);
         int evaluation = minimax(clonedBoard, depth - 1, false, newTurnCount, alpha, beta, maxPlayer, minPlayer);
-        if (evaluation > alpha)
-          alpha = evaluation;
+        alpha = Math.max(alpha, evaluation);
         if (alpha >= beta)
           break;
-        // maxEvaluation = Math.max(maxEvaluation, evaluation);
+        else
+          maxEvaluation = Math.max(maxEvaluation, evaluation);
+
       }
-      return alpha;
+      return maxEvaluation;
     } else {
-      // int minEvaluation = 200000;
+      int minEvaluation = 200000;
       Field[] avaliableMoves = board.getAvaliableMoves();
       int newTurnCount = turnCount + 1;
 
@@ -161,13 +184,14 @@ public class Player {
         Choice choice = new Choice(avaliableMoves[i].row, avaliableMoves[i].column, minPlayer.mark);
         clonedBoard.addMark(choice);
         int evaluation = minimax(clonedBoard, depth - 1, true, newTurnCount, alpha, beta, maxPlayer, minPlayer);
-        if (evaluation < beta)
-          beta = evaluation;
+        beta = Math.min(beta, evaluation);
         if (alpha >= beta)
           break;
-        // minEvaluation = Math.min(minEvaluation, evaluation);
+        else
+          minEvaluation = Math.min(minEvaluation, evaluation);
+
       }
-      return beta;
+      return minEvaluation;
     }
   }
 
