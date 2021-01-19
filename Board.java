@@ -102,6 +102,18 @@ public class Board {
     return winCondition;
   }
 
+  private boolean checkWinCondition(char mark) {
+    boolean winCondition = false;
+    winCondition = checkRows(mark);
+    if (winCondition)
+      return true;
+    winCondition = checkColumns(mark);
+    if (winCondition)
+      return true;
+    winCondition = checkDiagonals(mark);
+    return winCondition;
+  }
+
   private boolean checkRows() {
     int j = 0;
 
@@ -117,7 +129,22 @@ public class Board {
         j++;
       }
     }
-    System.out.println("checkRows complete");
+    return false;
+  }
+
+  private boolean checkRows(char mark) {
+    int j = 0;
+
+    for (int i = 0; i < length; i++) {
+      j = 0;
+      while (j < length) {
+        if (getMark(i, j) != mark)
+          break;
+        if (j == length - 1)
+          return true;
+        j++;
+      }
+    }
     return false;
   }
 
@@ -135,7 +162,21 @@ public class Board {
         i++;
       }
     }
-    System.out.println("checkColumns complete");
+    return false;
+  }
+
+  private boolean checkColumns(char mark) {
+    int i = 0;
+    for (int j = 0; j < length; j++) {
+      i = 0;
+      while (i < length) {
+        if (getMark(i, j) != mark)
+          break;
+        if (i == length - 1)
+          return true;
+        i++;
+      }
+    }
     return false;
   }
 
@@ -158,8 +199,50 @@ public class Board {
       if (i == length - 2)
         return true;
     }
-    System.out.println("Check diagonals compelte");
     return false;
+  }
+
+  private boolean checkDiagonals(char mark) {
+
+    for (int i = 0; i < length; i++) {
+      if (getMark(i, i) != mark)
+        break;
+      if (i == length - 1)
+        return true;
+    }
+
+    for (int i = 0; i < length; i++) {
+      if (getMark(i, length - 1 - i) != mark)
+        break;
+      if (i == length - 1)
+        return true;
+    }
+    return false;
+  }
+
+  // Methods used for minimax algorithim
+  public boolean isEnded() {
+    Field[] avaliableMoves = getAvaliableMoves();
+    if (avaliableMoves.length == 0)
+      return true;
+    else if (checkWinCondition())
+      return true;
+    else
+      return false;
+  }
+
+  public int getScore(MinimaxPlayer maxPlayer, MinimaxPlayer minPlayer) {
+    int score = 0;
+
+    if (checkWinCondition(minPlayer.mark)) {
+      score = -1000;
+    }
+
+    if (checkWinCondition(minPlayer.mark)) {
+      score = 1000;
+    }
+
+    return score;
   }
 
 }

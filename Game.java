@@ -42,6 +42,12 @@ public class Game {
         break;
       }
       System.out.println(turnCount);
+      try {
+        Thread.sleep(100);
+      } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+        return;
+      }
       turnCount++;
 
     }
